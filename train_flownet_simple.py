@@ -217,7 +217,7 @@ class Net(object):
             tf.summary.scalar('loss2', loss2)
             tf.summary.scalar('loss1', loss1)
             tf.summary.scalar('loss', self.loss)
-            self.merged = tf.merge_all_summaries()
+            self.merged = tf.summary.merge_all()
         optimizer = tf.train.AdamOptimizer(self.lr)
         self.train_op = slim.learning.create_train_op(self.loss, optimizer)
 
@@ -253,12 +253,12 @@ def main(_):
     with tf.Session(config=model.tf_config) as sess:
         sess.run(model.init_all)
         # saver.restore(sess, dir_restore)
-        writer_train = tf.train.SummaryWriter(dir_log_train, sess.graph)
-        writer_val = tf.train.SummaryWriter(dir_log_test, sess.graph)
+        writer_train = tf.summary.FileWriter(dir_log_train, sess.graph)
+        writer_val = tf.summary.FileWriter(dir_log_test, sess.graph)
         for epoch in range(epoch_max):
             lr_decay = 0.1 ** (epoch / epoch_lr_decay)
             lr = lr_base * lr_decay
-            for iteration in xrange(iter_per_epoch):
+            for iteration in range(iter_per_epoch):
                 time_start = time.time()
                 global_iter = epoch * iter_per_epoch + iteration
                 x1_t, x2_t, x3_t = dataset_t.next_batch()
