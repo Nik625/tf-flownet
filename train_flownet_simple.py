@@ -4,8 +4,14 @@
 author: Linjian Zhang
 """
 
-import tensorflow as tf
-import tensorflow.contrib.slim as slim
+
+
+import warnings
+with warnings.catch_warnings():
+    warnings.filterwarnings("ignore", category=FutureWarning)
+    import tensorflow as tf
+    import tensorflow.contrib.slim as slim
+    
 import random
 import os
 import cv2
@@ -14,11 +20,12 @@ import shutil
 import struct
 import time
 
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 
 dir0 = '20170805_1'
 net_name = 'flownet_simple/'
 dir_restore = 'model/flownet_simple/20170627_6/model-6250'
-dir_data = '/media/csc105/Data/dataset/FlyingChairs/data/'
+dir_data = 'media/csc105/Data/dataset/FlyingChairs/data/'
 
 lr_base = 1e-3              # initial learning rate
 epoch_lr_decay = 500        # every # epoch, lr will decay 0.1
@@ -98,7 +105,7 @@ class Data(object):
         self.index_total = range(self.number)
         self.shuffle = shuffle
         self.minus_mean = minus_mean
-        if self.shuffle: random.shuffle(self.index_total)
+        if self.shuffle: random.shuffle(list(self.index_total))
 
     def read_flow(self, name):
         f = open(name, "rb")
