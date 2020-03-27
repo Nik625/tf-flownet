@@ -39,9 +39,9 @@ dir_model = dir_models + dir0
 dir_log_train = dir_logs + dir0 + '_train'
 dir_log_test = dir_logs + dir0 + '_test'
 if not os.path.exists(dir_models):
-    os.mkdir(dir_models)
+    os.makedirs(dir_models)
 if not os.path.exists(dir_logs):
-    os.mkdir(dir_logs)
+    os.makedirs(dir_logs)
 if os.path.exists(dir_model):
     shutil.rmtree(dir_model)
 if os.path.exists(dir_log_train):
