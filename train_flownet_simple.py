@@ -152,7 +152,7 @@ class Net(object):
         self.x3 = tf.placeholder(tf.float32, [None, H, W, 2], name='x3')  # label
         self.lr = tf.placeholder(tf.float32, [], name='lr')  # lr
         with tf.variable_scope('conv'):
-            concat1 = tf.concat(3, [self.x1, self.x2])
+            concat1 = tf.concat([self.x1, self.x2], 3)
             conv1 = slim.conv2d(concat1, 64, [7, 7], 2, scope='conv1')
             conv2 = slim.conv2d(conv1, 128, [5, 5], 2, scope='conv2')
             conv3 = slim.conv2d(conv2, 256, [5, 5], 2, scope='conv3')
@@ -169,27 +169,27 @@ class Net(object):
             # 12 * 16 flow
             deconv5 = slim.conv2d_transpose(conv6_1, 512, [4, 4], 2, scope='deconv5')
             deconvflow6 = slim.conv2d_transpose(predict6, 2, [4, 4], 2, 'SAME', scope='deconvflow6')
-            concat5 = tf.concat(3, [conv5_1, deconv5, deconvflow6], name='concat5')
+            concat5 = tf.concat([conv5_1, deconv5, deconvflow6], 3, name='concat5')
             predict5 = slim.conv2d(concat5, 2, [3, 3], 1, 'SAME', activation_fn=None, scope='predict5')
             # 24 * 32 flow
             deconv4 = slim.conv2d_transpose(concat5, 256, [4, 4], 2, 'SAME', scope='deconv4')
             deconvflow5 = slim.conv2d_transpose(predict5, 2, [4, 4], 2, 'SAME', scope='deconvflow5')
-            concat4 = tf.concat(3, [conv4_1, deconv4, deconvflow5], name='concat4')
+            concat4 = tf.concat([conv4_1, deconv4, deconvflow5], 3, name='concat4')
             predict4 = slim.conv2d(concat4, 2, [3, 3], 1, 'SAME', activation_fn=None, scope='predict4')
             # 48 * 64 flow
             deconv3 = slim.conv2d_transpose(concat4, 128, [4, 4], 2, 'SAME', scope='deconv3')
             deconvflow4 = slim.conv2d_transpose(predict4, 2, [4, 4], 2, 'SAME', scope='deconvflow4')
-            concat3 = tf.concat(3, [conv3_1, deconv3, deconvflow4], name='concat3')
+            concat3 = tf.concat([conv3_1, deconv3, deconvflow4], 3, name='concat3')
             predict3 = slim.conv2d(concat3, 2, [3, 3], 1, 'SAME', activation_fn=None, scope='predict3')
             # 96 * 128 flow
             deconv2 = slim.conv2d_transpose(concat3, 64, [4, 4], 2, 'SAME', scope='deconv2')
             deconvflow3 = slim.conv2d_transpose(predict3, 2, [4, 4], 2, 'SAME', scope='deconvflow3')
-            concat2 = tf.concat(3, [conv2, deconv2, deconvflow3], name='concat2')
+            concat2 = tf.concat([conv2, deconv2, deconvflow3], 3, name='concat2')
             predict2 = slim.conv2d(concat2, 2, [3, 3], 1, 'SAME', activation_fn=None, scope='predict2')
             # 192 * 256 flow
             deconv1 = slim.conv2d_transpose(concat2, 64, [4, 4], 2, 'SAME', scope='deconv1')
             deconvflow2 = slim.conv2d_transpose(predict2, 2, [4, 4], 2, 'SAME', scope='deconvflow2')
-            concat1 = tf.concat(3, [conv1, deconv1, deconvflow2], name='concat1')
+            concat1 = tf.concat([conv1, deconv1, deconvflow2], 3, name='concat1')
             predict1 = slim.conv2d(concat1, 2, [3, 3], 1, 'SAME', activation_fn=None, scope='predict1')
 
         self.tvars = tf.trainable_variables()  # turn on if you want to check the variables
